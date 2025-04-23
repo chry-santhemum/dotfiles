@@ -1,5 +1,6 @@
 
 #!/bin/bash
+set -euo pipefail
 
 # install node for vscode
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
@@ -28,11 +29,12 @@ cd ocr
 # this will create a virtual environment and install the dependencies
 uv sync
 
+source .venv/bin/activate
+# # Setup git so huggingface works
+git config --global user.email "o.clivegriffin@gmail.com"
+git config --global user.name "oli-clive-griffin"
+git config --global credential.helper store
 huggingface-cli login --token $RUNPOD_HF_TOKEN --add-to-git-credential
 wandb login $RUNPOD_WANDB_TOKEN
 
-
-# # Setup git
-# git config --global user.email "$email"
-# git config --global user.name "$name"
-# git config --global credential.helper store
+echo "\n\n Setup complete. Please source the virtual environment with:\nsource .venv/bin/activate"
