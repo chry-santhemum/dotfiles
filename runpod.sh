@@ -16,9 +16,23 @@ npm -v # Should print "10.9.2".
 # 1) Install uv and create virtual environment
 curl -L https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env
-uv python install 3.11
-uv venv
 
-# 2) Assuming repo is cloned, run setup scripts
-bash dotfiles/github.sh
-source dotfiles/install.sh
+# expects the data directory to be synced to /root/ocr/data
+export HF_HOME="/root/ocr/data/hf"
+export HF_HUB_ENABLE_HF_TRANSFER=1
+
+git clone https://github.com/chry-santhemum/ocr.git
+
+cd ocr
+
+# this will create a virtual environment and install the dependencies
+uv sync
+
+huggingface-cli login --token $RUNPOD_HF_TOKEN --add-to-git-credential
+wandb login $RUNPOD_WANDB_TOKEN
+
+
+# # Setup git
+# git config --global user.email "$email"
+# git config --global user.name "$name"
+# git config --global credential.helper store
