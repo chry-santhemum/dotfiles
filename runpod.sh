@@ -1,5 +1,5 @@
+
 #!/bin/bash
-set -euo pipefail
 
 # install node for vscode
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
@@ -22,4 +22,3 @@ uv venv
 # 2) Assuming repo is cloned, run setup scripts
 bash dotfiles/github.sh
 source dotfiles/install.sh
-source /root/.bashrc
