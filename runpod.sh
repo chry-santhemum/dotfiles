@@ -19,8 +19,9 @@ curl -L https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env
 
 # expects the data directory to be synced to /root/ocr/data
-export HF_HOME="/root/ocr/data/hf"
-export HF_HUB_ENABLE_HF_TRANSFER=1
+echo "HF_HOME=/root/ocr/data/hf" >> $HOME/.bashrc
+echo "export HF_HUB_ENABLE_HF_TRANSFER=1" >> $HOME/.bashrc
+source $HOME/.bashrc
 
 git clone https://github.com/chry-santhemum/ocr.git
 
