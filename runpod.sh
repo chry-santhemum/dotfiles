@@ -21,7 +21,7 @@ source dotfiles/install.sh
 
 # clone repos
 cd /workspace
-git clone https://github.com/chry-santhemum/ocr || true
-set +u
-source /root/.bashrc
-set -u
+# git clone https://github.com/chry-santhemum/ocr || true
+# set +u
+# source /root/.bashrc
+# set -u
