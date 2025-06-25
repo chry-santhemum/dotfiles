@@ -71,6 +71,11 @@ else
   echo "Skipping Claude Code installation"
 fi
 
-cd /workspace
-echo "Setup complete! Restarting shell to apply all changes..."
+echo "Restarting shell to apply all changes..."
 exec bash 
+
+echo "Syncing uv environment..."
+cd /workspace/pm-bias
+venv
+uv sync --active --no-install-package flash-attn
+uv sync --active --no-build-isolation
