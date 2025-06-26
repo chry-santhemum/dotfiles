@@ -47,6 +47,7 @@ echo "Configuring shell aliases and environment..."
 echo "alias gc='git add . && git commit -m'" >> /root/.bashrc
 echo "alias tma='tmux attach -t'" >> /root/.bashrc
 echo "alias venv='source /root/.venv/bin/activate'" >> /root/.bashrc
+echo "alias tb='tensorboard --host=0.0.0.0 --port=6006'" >> /root/.bashrc
 echo "export HF_HOME=/workspace/hf" >> /root/.bashrc
 echo "export HF_HUB_ENABLE_HF_TRANSFER=1" >> /root/.bashrc
 
