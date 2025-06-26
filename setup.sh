@@ -71,11 +71,11 @@ else
   echo "Skipping Claude Code installation"
 fi
 
-echo "Restarting shell to apply all changes..."
-exec bash 
-
 echo "Syncing uv environment..."
 cd /workspace/pm-bias
-venv
+source /root/.venv/bin/activate
 uv sync --active --no-install-package flash-attn
 uv sync --active --no-build-isolation
+
+echo "Restarting shell to apply all changes..."
+exec bash 
