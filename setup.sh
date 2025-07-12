@@ -64,6 +64,12 @@ echo "Setting up authentication..."
 huggingface-cli login --token $RUNPOD_HF_TOKEN --add-to-git-credential
 wandb login $RUNPOD_WANDB_TOKEN
 
+# ipython autoreload
+ipython profile create
+echo "c.InteractiveShellApp.exec_lines = []" >> /root/.ipython/profile_default/ipython_config.py
+echo "c.InteractiveShellApp.exec_lines.append('%load_ext autoreload')" >> /root/.ipython/profile_default/ipython_config.py
+echo "c.InteractiveShellApp.exec_lines.append('%autoreload 2')" >> /root/.ipython/profile_default/ipython_config.py
+
 # coding help (conditional)
 if [ "$INSTALL_CLAUDE" = true ]; then
   echo "Installing Claude Code assistant..."
