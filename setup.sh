@@ -50,6 +50,7 @@ echo "alias venv='source /root/.venv/bin/activate'" >> /root/.bashrc
 echo "alias tb='tensorboard --host=0.0.0.0 --port=6006'" >> /root/.bashrc
 echo "export HF_HOME=/workspace/hf" >> /root/.bashrc
 echo "export HF_HUB_ENABLE_HF_TRANSFER=1" >> /root/.bashrc
+echo "export rsync_mats='rsync -avz /workspace/checkpoints/ $RUNPOD_MATS_USER@$RUNPOD_MATS_HOST:/$RUNPOD_MATS_PATH'" >> /root/.bashrc
 
 # install Python packages
 echo "Installing Python packages..."
