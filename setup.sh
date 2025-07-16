@@ -40,7 +40,8 @@ bash dotfiles/github.sh
 # system packages
 echo "Installing system packages..."
 apt-get update
-apt-get install -y tmux
+apt install -y tmux
+apt install -y rsync
 
 # add aliases and environment variables to .bashrc
 echo "Configuring shell aliases and environment..."
