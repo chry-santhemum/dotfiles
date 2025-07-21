@@ -45,6 +45,7 @@ apt install -y rsync
 
 # add aliases and environment variables to .bashrc
 echo "Configuring shell aliases and environment..."
+echo "alias gs='git status'" >> $HOME/.bashrc
 echo "alias gc='git add . && git commit -m'" >> $HOME/.bashrc
 echo "alias tma='tmux attach -t'" >> $HOME/.bashrc
 echo "alias venv='source $HOME/.venv/bin/activate'" >> $HOME/.bashrc
