@@ -64,7 +64,7 @@ uv pip install "python-dotenv"
 
 # authentication
 echo "Setting up authentication..."
-huggingface-cli login --token $RUNPOD_HF_TOKEN --add-to-git-credential
+hf auth login --token $RUNPOD_HF_TOKEN --add-to-git-credential
 wandb login $RUNPOD_WANDB_TOKEN
 
 # ipython autoreload
