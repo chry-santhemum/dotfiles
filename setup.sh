@@ -47,6 +47,8 @@ apt install -y rsync
 echo "Configuring shell aliases and environment..."
 echo "alias gs='git status'" >> $HOME/.bashrc
 echo "alias gc='git add . && git commit -m'" >> $HOME/.bashrc
+echo "alias gps='git push'" >> $HOME/.bashrc
+echo "alias gpl='git pull'" >> $HOME/.bashrc
 echo "alias tma='tmux attach -t'" >> $HOME/.bashrc
 echo "alias venv='source $HOME/.venv/bin/activate'" >> $HOME/.bashrc
 echo "alias tb='tensorboard --host=0.0.0.0 --port=6006'" >> $HOME/.bashrc
