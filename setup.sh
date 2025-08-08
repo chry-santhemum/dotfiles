@@ -151,6 +151,12 @@ source $HOME/.venv/bin/activate
 uv sync --active --no-install-package flash-attn
 uv sync --active --no-build-isolation
 
+echo "Setting up tmux..."
+touch $HOME/.tmux.conf
+cat <<'EOF' >> $HOME/.tmux.conf
+set-option -g default-command "zsh"
+EOF
+
 # --- Final Step ---
 echo "Setup complete! Restarting shell with Zsh to apply all changes..."
 exec zsh
