@@ -16,7 +16,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# --- Initial Installations (No changes needed here) ---
+# --- Initial Installations ---
 echo "Installing Node.js..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
 # Source nvm for the current script session
@@ -38,35 +38,62 @@ echo "Setting up GitHub..."
 bash $HOME/dotfiles/github.sh
 
 echo "Installing system packages..."
-# Note: su -c might not be available or work as expected in all environments.
-# Running as root or with sudo is more common.
 if [[ $(id -u) -ne 0 ]]; then
   echo "Requesting sudo for package installation..."
   sudo apt-get update && sudo apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh
 else
-  apt-get update && apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh
+  apt-get update && apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh sudo
 fi
 
-# --- Configure Zsh ---
+# --- Configure Zsh & .zshrc ---
 echo "Configuring Zsh, Oh My Zsh, and Powerlevel10k..."
+
+# Remove previous installations to ensure a clean slate
+if [ -d "$HOME/.oh-my-zsh" ]; then
+  echo "Found existing Oh My Zsh installation. Removing for a clean reinstall..."
+  rm -rf "$HOME/.oh-my-zsh"
+fi
+if [ -f "$HOME/.zshrc" ]; then
+  echo "Found existing .zshrc file. Backing it up to .zshrc.bak..."
+  mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
+fi
+if [ -f "$HOME/.p10k.zsh" ]; then
+    rm -f "$HOME/.p10k.zsh"
+fi
+
 # Install Oh My Zsh non-interactively
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 # Install Powerlevel10k theme
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-# Set Powerlevel10k as the theme in .zshrc
-sed -i 's|^ZSH_THEME=".*"|ZSH_THEME="powerlevel10k/powerlevel10k"|' ~/.zshrc
+# Copy your pre-configured .p10k.zsh file
+echo "Copying pre-configured Powerlevel10k theme file..."
+cp $HOME/dotfiles/.p10k.zsh $HOME/.p10k.zsh
 
-# Set Zsh as the default shell for the user
-# This may prompt for a password. The '-y' flag is not a valid option.
-sudo chsh -s $(which zsh) $(whoami)
+# Create .zshrc from scratch with the correct structure
+echo "Creating .zshrc with Instant Prompt and custom configurations..."
+cat <<'EOF' > $HOME/.zshrc
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
-# --- Add Aliases and Environment Variables to .zshrc ---
-echo "Adding configurations to .zshrc..."
-cat <<'EOF' >> $HOME/.zshrc
+# --- Oh My Zsh Configuration ---
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
 
-# --- Custom Configuration ---
+# Set the Powerlevel10k theme
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Standard Oh My Zsh settings
+plugins=(git)
+source $ZSH/oh-my-zsh.sh
+
+# To customize Powerlevel10k, uncomment the following line:
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# --- Custom User Configuration ---
 
 # Source NVM (Node Version Manager)
 export NVM_DIR="$HOME/.nvm"
@@ -88,10 +115,12 @@ alias rsync_mats='rsync -avz /workspace/checkpoints/ $RUNPOD_MATS_USER@$RUNPOD_M
 # Environment Variables
 export HF_HOME="/workspace/hf"
 export HF_HUB_ENABLE_HF_TRANSFER=1
-
 EOF
 
-# --- Python and Auth (No changes needed here) ---
+# Set Zsh as the default shell for the user
+sudo chsh -s $(which zsh) $(whoami)
+
+# --- Python and Auth ---
 echo "Installing Python packages..."
 uv pip install "huggingface_hub[cli,hf-transfer]" "wandb" "ipykernel" "python-dotenv"
 
