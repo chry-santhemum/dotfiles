@@ -1,3 +1,4 @@
+
 #!/bin/bash
 set -euo pipefail
 
@@ -91,7 +92,7 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # To customize Powerlevel10k, uncomment the following line:
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # --- Custom User Configuration ---
 
