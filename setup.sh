@@ -16,66 +16,98 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# install node
+# --- Initial Installations (No changes needed here) ---
 echo "Installing Node.js..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
-\. "$HOME/.nvm/nvm.sh"
+# Source nvm for the current script session
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 nvm install 22
-node -v # Should print "v22.14.0".
-nvm current # Should print "v22.14.0".
-npm -v # Should print "10.9.2".
+node -v
+npm -v
 
-# install uv
 echo "Installing uv and Python..."
 curl -L https://astral.sh/uv/install.sh | sh
+# Source uv for the current script session
 source $HOME/.local/bin/env
 uv python install 3.11
 uv venv
 source $HOME/.venv/bin/activate
 
-# run github setup
 echo "Setting up GitHub..."
-bash dotfiles/github.sh
+bash $HOME/dotfiles/github.sh
 
-# system packages
 echo "Installing system packages..."
-apt-get update
-apt install -y tmux
-apt install -y rsync
+# Note: su -c might not be available or work as expected in all environments.
+# Running as root or with sudo is more common.
+if [[ $(id -u) -ne 0 ]]; then
+  echo "Requesting sudo for package installation..."
+  sudo apt-get update && sudo apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh
+else
+  apt-get update && apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh
+fi
 
-# add aliases and environment variables to .bashrc
-echo "Configuring shell aliases and environment..."
-echo "alias gs='git status'" >> $HOME/.bashrc
-echo "alias gc='git add . && git commit -m'" >> $HOME/.bashrc
-echo "alias gps='git push'" >> $HOME/.bashrc
-echo "alias gpl='git pull'" >> $HOME/.bashrc
-echo "alias tma='tmux attach -t'" >> $HOME/.bashrc
-echo "alias venv='source $HOME/.venv/bin/activate'" >> $HOME/.bashrc
-echo "alias tb='tensorboard --host=0.0.0.0 --port=6006'" >> $HOME/.bashrc
-echo "export HF_HOME=/workspace/hf" >> $HOME/.bashrc
-echo "export HF_HUB_ENABLE_HF_TRANSFER=1" >> $HOME/.bashrc
-echo "alias rsync_mats='rsync -avz /workspace/checkpoints/ $RUNPOD_MATS_USER@$RUNPOD_MATS_HOST:/$RUNPOD_MATS_PATH'" >> $HOME/.bashrc
+# --- Configure Zsh ---
+echo "Configuring Zsh, Oh My Zsh, and Powerlevel10k..."
+# Install Oh My Zsh non-interactively
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-# install Python packages
+# Install Powerlevel10k theme
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+# Set Powerlevel10k as the theme in .zshrc
+sed -i 's|^ZSH_THEME=".*"|ZSH_THEME="powerlevel10k/powerlevel10k"|' ~/.zshrc
+
+# Set Zsh as the default shell for the user
+# This may prompt for a password. The '-y' flag is not a valid option.
+sudo chsh -s $(which zsh) $(whoami)
+
+# --- Add Aliases and Environment Variables to .zshrc ---
+echo "Adding configurations to .zshrc..."
+cat <<'EOF' >> $HOME/.zshrc
+
+# --- Custom Configuration ---
+
+# Source NVM (Node Version Manager)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Source uv (Python environment)
+source $HOME/.local/bin/env
+
+# Aliases
+alias gs='git status'
+alias gc='git add . && git commit -m'
+alias gps='git push'
+alias gpl='git pull'
+alias tma='tmux attach -t'
+alias venv='source $HOME/.venv/bin/activate'
+alias tb='tensorboard --host=0.0.0.0 --port=6006'
+alias rsync_mats='rsync -avz /workspace/checkpoints/ $RUNPOD_MATS_USER@$RUNPOD_MATS_HOST:/$RUNPOD_MATS_PATH'
+
+# Environment Variables
+export HF_HOME="/workspace/hf"
+export HF_HUB_ENABLE_HF_TRANSFER=1
+
+EOF
+
+# --- Python and Auth (No changes needed here) ---
 echo "Installing Python packages..."
-uv pip install "huggingface_hub[cli]"
-uv pip install "huggingface-hub[hf-transfer]"
-uv pip install "wandb"
-uv pip install "ipykernel"
-uv pip install "python-dotenv"
+uv pip install "huggingface_hub[cli,hf-transfer]" "wandb" "ipykernel" "python-dotenv"
 
-# authentication
 echo "Setting up authentication..."
 hf auth login --token $RUNPOD_HF_TOKEN --add-to-git-credential
 wandb login $RUNPOD_WANDB_TOKEN
 
-# ipython autoreload
+echo "Configuring iPython autoreload..."
 ipython profile create
-echo "c.InteractiveShellApp.exec_lines = []" >> $HOME/.ipython/profile_default/ipython_config.py
-echo "c.InteractiveShellApp.exec_lines.append('%load_ext autoreload')" >> $HOME/.ipython/profile_default/ipython_config.py
-echo "c.InteractiveShellApp.exec_lines.append('%autoreload 2')" >> $HOME/.ipython/profile_default/ipython_config.py
+cat <<'EOF' >> $HOME/.ipython/profile_default/ipython_config.py
+c.InteractiveShellApp.exec_lines = [
+    '%load_ext autoreload',
+    '%autoreload 2'
+]
+EOF
 
-# coding help (conditional)
 if [ "$INSTALL_CLAUDE" = true ]; then
   echo "Installing Claude Code assistant..."
   npm install -g @anthropic-ai/claude-code
@@ -89,5 +121,6 @@ source $HOME/.venv/bin/activate
 uv sync --active --no-install-package flash-attn
 uv sync --active --no-build-isolation
 
-echo "Restarting shell to apply all changes..."
-exec bash 
+# --- Final Step ---
+echo "Setup complete! Restarting shell with Zsh to apply all changes..."
+exec zsh
