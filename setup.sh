@@ -127,6 +127,26 @@ EOF
 # Set Zsh as the default shell for the user
 sudo chsh -s $(which zsh) $(whoami)
 
+###### wrapper script to source .zshenv before starting iPython
+mkdir -p $HOME/.local/bin/
+
+cat <<'EOF' > $HOME/.local/bin/kernel-wrapper.sh
+#!/bin/zsh
+# This script loads the Zsh environment before starting the Python kernel.
+source $HOME/.zshenv
+exec python -m ipykernel_launcher "$@"
+EOF
+
+chmod +x $HOME/.local/bin/kernel-wrapper.sh
+
+# modify kernel.json
+# Define the path to your kernel.json file
+KERNEL_FILE="/root/.venv/share/jupyter/kernels/python3/kernel.json"
+
+# Use jq to modify the file and save it back
+jq '.display_name = "Python 3 (with Zsh Env)" | .argv = ["/root/.local/bin/kernel-wrapper.sh", "-f", "{connection_file}"]' "$KERNEL_FILE" > "${KERNEL_FILE}.tmp" && mv "${KERNEL_FILE}.tmp" "$KERNEL_FILE"
+##########
+
 # --- Python and Auth ---
 echo "Installing Python packages..."
 uv pip install "huggingface_hub[cli,hf-transfer]" "wandb" "ipykernel" "python-dotenv"
