@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "Configuring iPython autoreload..."
-source $HOME/.venv/bin/activate
 uv pip install "ipykernel"
 ipython profile create
 cat <<'EOF' >> $HOME/.ipython/profile_default/ipython_config.py

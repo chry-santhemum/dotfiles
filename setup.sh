@@ -16,9 +16,19 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-source $HOME/dotfiles/setup_node.sh
+
+#!/bin/bash
+echo "Installing Node.js..."
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" =
+nvm install 22
+
 source $HOME/dotfiles/setup_uv.sh
 source $HOME/dotfiles/github.sh
+
+source $HOME/.local/bin/env
+source $HOME/.venv/bin/activate
 
 echo "Installing system packages..."
 if [[ $(id -u) -ne 0 ]]; then
@@ -42,7 +52,6 @@ fi
 
 echo "Syncing uv environment..."
 cd /workspace/rm-bias
-source $HOME/.venv/bin/activate
 uv sync --active --no-install-package flash-attn
 uv sync --active --no-build-isolation
 

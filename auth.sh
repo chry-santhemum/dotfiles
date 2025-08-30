@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "Installing hf and wandb python packages..."
-source $HOME/.venv/bin/activate
 uv pip install "huggingface_hub[cli,hf-transfer]" "wandb"
 
 echo "Setting up hf authentication..."
