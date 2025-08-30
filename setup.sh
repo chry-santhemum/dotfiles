@@ -28,9 +28,9 @@ else
   apt-get update && apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh sudo
 fi
 
-bash $HOME/dotfiles/setup_zsh.sh
 bash $HOME/dotfiles/auth.sh
 bash $HOME/dotfiles/autoreload.sh
+bash $HOME/dotfiles/setup_zsh.sh
 bash $HOME/dotfiles/tmux.sh
 
 if [ "$INSTALL_CLAUDE" = true ]; then
