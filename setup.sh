@@ -16,9 +16,9 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-bash $HOME/dotfiles/setup_node.sh
-bash $HOME/dotfiles/setup_uv.sh
-bash $HOME/dotfiles/github.sh
+source $HOME/dotfiles/setup_node.sh
+source $HOME/dotfiles/setup_uv.sh
+source $HOME/dotfiles/github.sh
 
 echo "Installing system packages..."
 if [[ $(id -u) -ne 0 ]]; then
@@ -28,10 +28,10 @@ else
   apt-get update && apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh sudo
 fi
 
-bash $HOME/dotfiles/auth.sh
-bash $HOME/dotfiles/autoreload.sh
-bash $HOME/dotfiles/setup_zsh.sh
-bash $HOME/dotfiles/tmux.sh
+source $HOME/dotfiles/auth.sh
+source $HOME/dotfiles/autoreload.sh
+source $HOME/dotfiles/setup_zsh.sh
+source $HOME/dotfiles/tmux.sh
 
 if [ "$INSTALL_CLAUDE" = true ]; then
   echo "Installing Claude Code assistant..."
