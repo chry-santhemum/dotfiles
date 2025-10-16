@@ -50,10 +50,5 @@ else
   echo "Skipping Claude Code installation"
 fi
 
-echo "Syncing uv environment..."
-cd /workspace/rm-bias
-uv sync --active --no-install-package flash-attn
-uv sync --active --no-build-isolation
-
 echo "Setup complete! Restarting shell with Zsh to apply all changes..."
 exec zsh
