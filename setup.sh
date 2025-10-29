@@ -17,18 +17,13 @@ while [[ $# -gt 0 ]]; do
 done
 
 
-#!/bin/bash
 echo "Installing Node.js..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" =
-nvm install 22
-
-source $HOME/dotfiles/setup_uv.sh
-source $HOME/dotfiles/github.sh
-
-source $HOME/.local/bin/env
-source $HOME/.venv/bin/activate
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+nvm install 24
+node -v
+npm -v
 
 echo "Installing system packages..."
 if [[ $(id -u) -ne 0 ]]; then
@@ -38,13 +33,18 @@ else
   apt-get update && apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh sudo
 fi
 
-source $HOME/dotfiles/auth.sh
+
+# Setup uv and config hf and wandb
+source $HOME/dotfiles/setup_uv.sh
+
+source $HOME/dotfiles/github.sh
 source $HOME/dotfiles/autoreload.sh
 source $HOME/dotfiles/setup_zsh.sh
 source $HOME/dotfiles/tmux.sh
 
+
 if [ "$INSTALL_CLAUDE" = true ]; then
-  echo "Installing Claude Code assistant..."
+  echo "Installing Claude Code"
   npm install -g @anthropic-ai/claude-code
 else
   echo "Skipping Claude Code installation"
