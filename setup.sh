@@ -34,9 +34,7 @@ else
 fi
 
 
-# Setup uv and config hf and wandb
 source $HOME/dotfiles/setup_uv.sh
-
 source $HOME/dotfiles/github.sh
 source $HOME/dotfiles/autoreload.sh
 source $HOME/dotfiles/setup_zsh.sh
