@@ -25,19 +25,9 @@ nvm install 24
 node -v
 npm -v
 
-echo "Installing system packages..."
-if [[ $(id -u) -ne 0 ]]; then
-  echo "Requesting sudo for package installation..."
-  sudo apt-get update && sudo apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh
-else
-  apt-get update && apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh sudo
-fi
-
 
 source $HOME/dotfiles/github.sh
 source $HOME/dotfiles/setup_uv.sh
-source $HOME/dotfiles/autoreload.sh
-source $HOME/dotfiles/setup_zsh.sh
 source $HOME/dotfiles/tmux.sh
 
 
@@ -48,5 +38,5 @@ else
   echo "Skipping Claude Code installation"
 fi
 
-echo "Setup complete! Restarting shell with Zsh to apply all changes..."
-exec zsh
+echo "Setup complete! Restarting bash shell..."
+exec bash
