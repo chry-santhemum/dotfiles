@@ -29,6 +29,7 @@ npm -v
 source $HOME/dotfiles/github.sh
 source $HOME/dotfiles/setup_uv.sh
 source $HOME/dotfiles/tmux.sh
+source $HOME/dotfiles/setup_zsh.sh
 
 
 if [ "$INSTALL_CLAUDE" = true ]; then
@@ -38,5 +39,5 @@ else
   echo "Skipping Claude Code installation"
 fi
 
-echo "Setup complete! Restarting bash shell..."
-exec bash
+echo "Setup complete! Restarting zsh shell..."
+exec zsh
