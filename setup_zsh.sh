@@ -73,7 +73,7 @@ export ZSH="$HOME/.oh-my-zsh"
 export NVM_DIR="$HOME/.nvm"
 
 # HF Environment Variables
-export HF_HOME="/workspace/hf"
+export HF_HOME="/root/hf"
 export HF_HUB_ENABLE_HF_TRANSFER=1
 EOF
 
