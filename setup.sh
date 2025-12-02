@@ -2,11 +2,11 @@
 set -euo pipefail
 
 # Parse arguments
-INSTALL_CLAUDE=false
+INSTALL_CLAUDE=true
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --claude)
-      INSTALL_CLAUDE=true
+    --no-claude)
+      INSTALL_CLAUDE=false
       shift
       ;;
     *)
@@ -15,7 +15,6 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
-
 
 echo "Installing Node.js..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
@@ -33,17 +32,16 @@ else
   apt-get update && apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh sudo
 fi
 
-
 source $HOME/dotfiles/github.sh
 source $HOME/dotfiles/setup_uv.sh
 source $HOME/dotfiles/autoreload.sh
 source $HOME/dotfiles/setup_zsh.sh
 source $HOME/dotfiles/tmux.sh
 
-
+# Claude Code installation
 if [ "$INSTALL_CLAUDE" = true ]; then
   echo "Installing Claude Code"
-  npm install -g @anthropic-ai/claude-code
+  curl -fsSL https://claude.ai/install.sh | bash
 else
   echo "Skipping Claude Code installation"
 fi
