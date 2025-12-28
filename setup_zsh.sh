@@ -74,7 +74,6 @@ export NVM_DIR="$HOME/.nvm"
 
 # HF Environment Variables
 export HF_HOME="/root/hf"
-export HF_HUB_ENABLE_HF_TRANSFER=1
 EOF
 
 # Set Zsh as the default shell for the user
