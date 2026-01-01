@@ -42,6 +42,7 @@ source $HOME/dotfiles/tmux.sh
 if [ "$INSTALL_CLAUDE" = true ]; then
   echo "Installing Claude Code"
   curl -fsSL https://claude.ai/install.sh | bash
+  # npm i -g @openai/codex
 else
   echo "Skipping Claude Code installation"
 fi
