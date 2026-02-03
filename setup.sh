@@ -27,9 +27,9 @@ npm -v
 echo "Installing system packages..."
 if [[ $(id -u) -ne 0 ]]; then
   echo "Requesting sudo for package installation..."
-  sudo apt-get update && sudo apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh
+  sudo apt-get update && sudo apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh unzip
 else
-  apt-get update && apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh sudo
+  apt-get update && apt-get install -y less nano htop ncdu nvtop lsof rsync btop jq tmux zsh sudo unzip
 fi
 
 source $HOME/dotfiles/github.sh
