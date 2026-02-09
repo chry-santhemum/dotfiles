@@ -66,10 +66,13 @@ alias venv='source $HOME/.venv/bin/activate'
 alias tb='tensorboard --host=0.0.0.0 --port=6006'
 alias cdsp='IS_SANDBOX=1 claude --dangerously-skip-permissions'
 alias rsync_mats='rsync -avz /workspace/checkpoints/ $RUNPOD_MATS_USER@$RUNPOD_MATS_HOST:/$RUNPOD_MATS_PATH'
+
+# Pixi autocompletion
+autoload -Uz compinit && compinit
+eval "$(pixi completion --shell zsh)"
 EOF
 
-cat <<'EOF' >> $HOME/.zshenv
-
+cat <<'EOF' > $HOME/.zshenv
 export ZSH="$HOME/.oh-my-zsh"
 export NVM_DIR="$HOME/.nvm"
 
