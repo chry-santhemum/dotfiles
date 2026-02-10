@@ -33,7 +33,6 @@ else
 fi
 
 source $HOME/dotfiles/github.sh
-source $HOME/dotfiles/autoreload.sh
 source $HOME/dotfiles/setup_pixi.sh
 source $HOME/dotfiles/setup_zsh.sh
 source $HOME/dotfiles/tmux.sh

@@ -52,9 +52,7 @@ source $ZSH/oh-my-zsh.sh
 # Source NVM (Node Version Manager)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-# Source uv (Python environment)
-source $HOME/.local/bin/env
+export PATH="$HOME/.local/bin:$PATH"
 
 # Aliases
 alias gs='git status'
@@ -62,7 +60,6 @@ alias gc='git add . && git commit -m'
 alias gps='git push'
 alias gpl='git pull'
 alias tma='tmux attach -t'
-alias venv='source $HOME/.venv/bin/activate'
 alias tb='tensorboard --host=0.0.0.0 --port=6006'
 alias cdsp='IS_SANDBOX=1 claude --dangerously-skip-permissions'
 alias rsync_mats='rsync -avz /workspace/checkpoints/ $RUNPOD_MATS_USER@$RUNPOD_MATS_HOST:/$RUNPOD_MATS_PATH'
