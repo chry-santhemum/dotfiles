@@ -25,6 +25,7 @@ source $HOME/dotfiles/tmux.sh
 
 
 echo "Installing cc and codex"
+export CODEX_HOME="/workspace/.codex"
 curl -fsSL https://claude.ai/install.sh | bash
 npm i -g @openai/codex
 
