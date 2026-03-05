@@ -1,21 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-# Parse arguments
-INSTALL_CLAUDE=true
-while [[ $# -gt 0 ]]; do
-  case $1 in
-    --no-claude)
-      INSTALL_CLAUDE=false
-      shift
-      ;;
-    *)
-      echo "Unknown option $1"
-      exit 1
-      ;;
-  esac
-done
-
 echo "Installing Node.js..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
@@ -38,14 +23,10 @@ source $HOME/dotfiles/autoreload.sh
 source $HOME/dotfiles/setup_zsh.sh
 source $HOME/dotfiles/tmux.sh
 
-# Claude Code installation
-if [ "$INSTALL_CLAUDE" = true ]; then
-  echo "Installing Claude Code"
-  curl -fsSL https://claude.ai/install.sh | bash
-  # npm i -g @openai/codex
-else
-  echo "Skipping Claude Code installation"
-fi
+
+echo "Installing cc and codex"
+curl -fsSL https://claude.ai/install.sh | bash
+npm i -g @openai/codex
 
 echo "Setup complete! Restarting shell with Zsh to apply all changes..."
 exec zsh
