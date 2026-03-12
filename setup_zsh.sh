@@ -76,6 +76,7 @@ export NVM_DIR="$HOME/.nvm"
 # HF Environment Variables
 export HF_HOME="/root/hf"
 export CLAUDE_CONFIG_DIR="/workspace/.claude"
+export CODEX_HOME="/workspace/.codex"
 EOF
 
 # Set Zsh as the default shell for the user
