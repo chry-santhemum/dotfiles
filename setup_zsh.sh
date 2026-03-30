@@ -56,6 +56,8 @@ export NVM_DIR="$HOME/.nvm"
 # Source uv (Python environment)
 source $HOME/.local/bin/env
 
+mkdir -p /workspace/.codex
+
 # Aliases
 alias gs='git status'
 alias gc='git add . && git commit -m'
