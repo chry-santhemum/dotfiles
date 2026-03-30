@@ -67,7 +67,7 @@ alias tma='tmux attach -t'
 alias venv='source $HOME/.venv/bin/activate'
 alias tb='tensorboard --host=0.0.0.0 --port=6006'
 alias cdsp='IS_SANDBOX=1 claude --dangerously-skip-permissions'
-alias cyolo='IS_SANDBOX=1 codex --dangerously-bypass-approvals-and-sandbox'
+alias yolo='IS_SANDBOX=1 codex --dangerously-bypass-approvals-and-sandbox'
 alias rsync_mats='rsync -avz /workspace/checkpoints/ $RUNPOD_MATS_USER@$RUNPOD_MATS_HOST:/$RUNPOD_MATS_PATH'
 EOF
 
