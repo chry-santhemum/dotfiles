@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Configuring iPython autoreload..."
-uv pip install "ipykernel"
+uv pip install "ipykernel" --default-index https://pypi.tuna.tsinghua.edu.cn/simple
 ipython profile create
 cat <<'EOF' >> $HOME/.ipython/profile_default/ipython_config.py
 c.InteractiveShellApp.exec_lines = [
